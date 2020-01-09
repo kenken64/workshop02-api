@@ -80,24 +80,74 @@ app.get(`${API_URI}/city/:cityId`, (req,res)=>{
 
 
 // TODO POST /api/city
+app.post('/api/city', (req, resp) => {
 
+	// Perform a simple check
+	if (!citiesdb.validateForm(req.body))
+		return resp.status(400).json({ error: 'Incomplete parameters' })
 
+	const params = {
+		city: req.body.city,
+		loc: req.body.loc.map(v => parseFloat(v)),
+		pop: parseInt(req.body.pop),
+		state: req.body.state
+	}
 
+	resp.type('application/json')
+
+	db.insertCity(params)
+		.then(result => {
+			resp.status(201).json(result.ops[0])
+		})
+		.catch(error => {
+			console.error(error);
+			resp.status(400).json({ error: error });
+		})
+});
 
 // Optional workshop
 // TODO HEAD /api/state/:state
 // IMPORTANT: HEAD must be place before GET for the
 // same resource. Otherwise the GET handler will be invoked
-
-
+app.head('/api/state/:state', (req, resp) => {
+	resp.type('application/json')
+		.set('Accept-Ranges', 'items')
+		.set('Accept-Encoding', 'gzip')
+		.end()
+})
 
 // TODO GET /state/:state/count
+app.get('/api/state/:state/count', (req, resp) => {
 
+	resp.type('application/json')
 
+	db.countCitiesInState(req.params.state)
+		.then(result => {
+			resp.status(200)
+				.json({
+					state: req.params.state.toUpperCase(),
+					cities: result
+				})
+		})
+		.catch(error => {
+			resp.status(400).json({ error: error });
+		})
+})
 
 // TODO GET /city/:name
+app.get('/api/city/:name', (req, resp) => {
 
+	resp.type('application/json')
 
+	db.findCitiesByName(req.params.cityId)
+		.then(result => {
+			resp.status(200)
+				.json(result)
+		})
+		.catch(error => {
+			resp.status(400).json({ error: error });
+		})
+})
 
 // End of workshop
 
