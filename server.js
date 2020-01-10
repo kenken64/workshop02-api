@@ -48,7 +48,7 @@ app.get(`${API_URI}/state/:state`,
     res.type('application/json');
 
     Promise.all([
-        db.findCitiesByName(req.params.state, {offset: offset, limit:limit}),
+        db.findCitiesByStateCode(req.params.state, {offset: offset, limit:limit}),
         db.countCitiesInState(req.params.state) ])
         .then(result=>{
             res.status(200)
