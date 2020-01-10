@@ -83,7 +83,7 @@ app.get(`${API_URI}/city/:cityId`, (req,res)=>{
 app.post('/api/city', (req, resp) => {
 
 	// Perform a simple check
-	if (!citiesdb.validateForm(req.body))
+	if (!db.validateForm(req.body))
 		return resp.status(400).json({ error: 'Incomplete parameters' })
 
 	const params = {
@@ -135,12 +135,13 @@ app.get('/api/state/:state/count', (req, resp) => {
 })
 
 // TODO GET /city/:name
-app.get('/api/city/:name', (req, resp) => {
-
+app.get('/api/city/name/:name', (req, resp) => {
+	console.log("/api/city/name/:name")
 	resp.type('application/json')
 
-	db.findCitiesByName(req.params.cityId)
+	db.findCitiesByName(req.params.name)
 		.then(result => {
+			console.log(result);
 			resp.status(200)
 				.json(result)
 		})
