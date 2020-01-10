@@ -59,12 +59,12 @@ d. Its an READ operation. You can use POST to do this. The HTTP spec does not pr
 
 e. Pagination and range filter.
 
-3. My solution will beas follows
+3. My solution will be as follows:-
 
 We defined the following three endpoints:
 
-* /api/videos - this endpoint fetches all the videos available
-* /api/video/:id - this endpoint will receive the details of a single video. It will be called when the video is ready to be displayed.
-* /api/save-video/:assemblyId - this endpoint saves our videos during encoding. Here, it might seem like magic is happening, so allow me to give you a breakdown:
+* GET /api/videos - this endpoint fetches all the videos available
+* GET /api/video/:id - this endpoint will receive the details of a single video. It will be called when the video is ready to be displayed.
+* POST /api/save-video/:assemblyId - this endpoint saves our videos during encoding. Here, it might seem like magic is happening, so allow me to give you a breakdown:
 
-Tracking of usage and subscription will be on the save video endpoint.
+Tracking of usage and subscription will be on the save video endpoint. (/api/save-video/:assemblyId)
